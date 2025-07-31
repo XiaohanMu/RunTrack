@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: runtrack-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: runtrack-backend
+  template:
+    metadata:
+      labels:
+        app: runtrack-backend
+    spec:
+      containers:
+      - name: runtrack-backend
+        image: alanmunj/runtrack-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: PORT
+          value: "8000"

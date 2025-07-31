@@ -16,11 +16,15 @@ app.use(express.json());
 // Routes
 // app.use('/api/auth', require('./routes/auth'));
 // app.use('/api/runs', require('./routes/runs'));
-// app.use('/api/users', require('./routes/users'));
+// app.use('/api/users', require('./routes/user'));
 
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
+app.get('/', (req, res) => {
+  res.send('Welcome to the RunTrack API!');
 });
 
 app.listen(PORT, () => {
