@@ -14,9 +14,9 @@ app.use(morgan('combined'));
 app.use(express.json());
 
 // Routes
-// app.use('/api/auth', require('./routes/auth'));
-// app.use('/api/runs', require('./routes/runs'));
-// app.use('/api/users', require('./routes/user'));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/events', require('./routes/events'));
+app.use('/api/runSessions', require('./routes/runSessions'));
 
 // Health check
 app.get('/health', (req, res) => {
