@@ -4,6 +4,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Events from './pages/Events';
 import RunSessions from './pages/RunSessions';
+import Friends from './pages/Friends';
+import Navigation from './pages/Navigation';
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/events" element={<Events />} />
         <Route path="/run-sessions" element={<RunSessions />} />
+        <Route path="/friends" element={<Friends />} />
+        <Route path="/navigation" element={<Navigation />} />
       </Routes>
     </Router>
   );

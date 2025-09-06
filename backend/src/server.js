@@ -17,6 +17,7 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/events', require('./routes/events'));
 app.use('/api/runSessions', require('./routes/runSessions'));
+app.use('/api/friends', require('./routes/friends'));
 
 // Health check
 app.get('/health', (req, res) => {
