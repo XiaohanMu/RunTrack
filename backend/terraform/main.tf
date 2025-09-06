@@ -278,7 +278,7 @@ resource "aws_db_instance" "main" {
   instance_class         = "db.t3.micro"
   db_name                = "runtrackdb"
   username               = "admin"
-  password               = "changeme123!" # use Secrets Manager in production
+  password               = "alan_alan_mu" # use Secrets Manager in production
   db_subnet_group_name   = aws_db_subnet_group.main.name
   vpc_security_group_ids = [aws_security_group.db.id]
   skip_final_snapshot    = true
