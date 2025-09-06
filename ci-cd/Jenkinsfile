@@ -1,0 +1,102 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE_BACKEND = "alanmunj/runtrack-backend:latest"
+        DOCKER_IMAGE_FRONTEND = "alanmunj/runtrack-frontend:latest"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Backend') {
+            steps {
+                sh 'npm install --prefix backend && npm run build --prefix backend'
+            }
+        }
+
+        stage('Run Backend Tests') {
+            steps {
+                sh 'npm test --prefix backend'
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                sh 'npm test --prefix backend/tests/unit'
+            }
+        }
+
+        stage('Run Integration Tests') {
+            steps {
+                sh 'npm test --prefix backend/tests/integration'
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                sh 'npm install --prefix frontend && npm run build --prefix frontend'
+            }
+        }
+
+        stage('Run Frontend Tests') {
+            steps {
+                sh 'npm test --prefix frontend'
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                sh 'docker build -t $DOCKER_IMAGE_BACKEND ./backend'
+                sh 'docker build -t $DOCKER_IMAGE_FRONTEND ./frontend'
+            }
+        }
+
+        stage('Push Docker Images') {
+            steps {
+                withDockerRegistry([credentialsId: 'docker-hub-credentials', url: '']) {
+                    sh 'docker push $DOCKER_IMAGE_BACKEND'
+                    sh 'docker push $DOCKER_IMAGE_FRONTEND'
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f backend/k8s/manifests/'
+                sh 'kubectl apply -f frontend/k8s/manifests/'
+            }
+        }
+
+        stage('Rollback if Failure') {
+            steps {
+                script {
+                    try {
+                        sh 'kubectl rollout status deployment/backend-deployment'
+                        sh 'kubectl rollout status deployment/frontend-deployment'
+                    } catch (Exception e) {
+                        sh 'kubectl rollout undo deployment/backend-deployment'
+                        sh 'kubectl rollout undo deployment/frontend-deployment'
+                        error("Deployment failed and rollback executed.")
+                    }
+                }
+            }
+        }
+
+        stage('Provision Resources') {
+            steps {
+                sh './ci-cd/terraform-update.sh'
+            }
+        }
+
+        stage('Load Testing') {
+            steps {
+                sh 'k6 run ci-cd/k6-load-test.js'
+            }
+        }
+    }
+}

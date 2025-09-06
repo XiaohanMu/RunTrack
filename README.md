@@ -62,3 +62,58 @@ RunTrack is a web application designed to help users organize running events, tr
 
 ## License
 This project is licensed under the MIT License.
+
+## System Design
+
+### Architecture Overview
+RunTrack is designed with a modern microservices architecture, leveraging the following technologies:
+
+1. **Frontend**:
+   - Built with React and Vite for a fast and responsive user interface.
+   - Communicates with the backend via RESTful APIs.
+
+2. **Backend**:
+   - Developed using Node.js and Express.js.
+   - Implements JWT-based authentication and role-based access control (RBAC).
+   - Exposes RESTful APIs for user management, event organization, and run session tracking.
+
+3. **Database**:
+   - MySQL database hosted on AWS RDS.
+   - Designed with relational schema for users, events, and run sessions.
+   - Optimized for performance with indexed queries.
+
+4. **Containerization and Orchestration**:
+   - Services are containerized using Docker.
+   - Deployed to a Kubernetes cluster with horizontal autoscaling and rolling updates.
+
+5. **Infrastructure as Code**:
+   - AWS resources provisioned using Terraform.
+   - Includes VPC, subnets, security groups, and RDS MySQL.
+
+6. **CI/CD Pipeline**:
+   - Automated with Jenkins for building, testing, and deploying services.
+   - Includes load testing with k6 and Terraform updates for infrastructure changes.
+
+### Deployment Workflow
+1. **Build and Test**:
+   - Jenkins pipeline builds the Docker image and runs tests.
+   - k6 is used for load testing the backend.
+
+2. **Push to Docker Hub**:
+   - The Docker image is pushed to Docker Hub.
+
+3. **Deploy to Kubernetes**:
+   - Kubernetes manifests are applied to deploy the services.
+
+4. **Update AWS Resources**:
+   - Terraform is used to update infrastructure as needed.
+
+### Scalability and Reliability
+- Horizontal autoscaling ensures the application can handle increased traffic.
+- Rolling updates minimize downtime during deployments.
+- Load testing ensures the system can handle expected workloads.
+
+### Security
+- JWT authentication secures API endpoints.
+- Role-based access control restricts access to sensitive operations.
+- Security groups and VPC configurations protect AWS resources.
