@@ -283,3 +283,14 @@ resource "aws_db_instance" "main" {
   vpc_security_group_ids = [aws_security_group.db.id]
   skip_final_snapshot    = true
 }
+
+# SNS Topic for Friend Invites
+resource "aws_sns_topic" "friend_invites" {
+  name = "friend-invites-topic"
+}
+
+resource "aws_sns_topic_subscription" "friend_invites_email" {
+  topic_arn = aws_sns_topic.friend_invites.arn
+  protocol  = "email"
+  endpoint  = var.friend_invite_email
+}
