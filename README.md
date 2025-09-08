@@ -3,11 +3,11 @@
 RunTrack is a web application designed to help users organize running events, track their run sessions, and manage user accounts with login and registration functionality.
 
 ## Features
+
+### User & Session Management
 - **User Authentication**: Login and registration for users.
 - **Organize Events**: Create and view running events.
 - **Track Run Sessions**: Record and view user-specific run session data.
-
-## New Features
 
 ### Friends Management
 - **Add Friend**: Users can add other users as friends.
